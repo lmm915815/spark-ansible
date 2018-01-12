@@ -1,0 +1,17 @@
+---
+
+- name: install openjdk
+  package: name={{ item }}  state=present
+  with_items:
+    - 'java-{{ java_version }}-openjdk' 
+    - 'java-{{ java_version }}-openjdk-devel'
+  tags: 
+    - env 
+    - jdk 
+
+
+- name: copy spark config file
+  template: src={{ item.name }} dest=/var/bigdata/spark/conf/  mode={{ item.mode }}
+  with_items:
+    - { name: 'spark-env.sh' , mode: '0700' }
+  tags: spark

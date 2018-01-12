@@ -1,0 +1,17 @@
+---
+- stat: path=/var/bigdata/spark/
+  register: sparkInstall
+
+- import_tasks: config.yml
+  when: not sparkInstall.stat.exists
+  tags:
+    - m1
+
+- import_tasks: install.yml 
+  tags:
+    - m2
+
+- import_tasks: test.yml
+  tags:
+    - m3
+

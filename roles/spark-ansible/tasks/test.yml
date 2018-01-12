@@ -1,0 +1,17 @@
+---
+
+#- hosts: sparkmaster
+
+- name: spark is running
+  shell: jps | grep -E "Worker|Master" | grep -vc jps 
+  register: jpsCnt
+
+- name: start spark cluster
+  shell: /var/bigdata/spark/sbin/start-all.sh
+  args:
+    executable: /bin/bash 
+  when: jpsCnt.stdout != 2
+  tags: 
+    - start_cluster  
+    - master
+
